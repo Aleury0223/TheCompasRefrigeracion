@@ -4,13 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Compas Refrigeración — Catálogo de servicios y tarifas</title>
-<meta name="description" content="The Compas Refrigeración: instalación de aire acondicionado en República Dominicana. Tarifas desde RD$2,000, cotizador en línea y verificación gratis de tu equipo A/A. WhatsApp (809) 742-6135.">
+<meta name="description" content="The Compas Refrigeración: instalación y mantenimiento de aire acondicionado en República Dominicana. Tarifas desde RD$1,500, cotizador en línea y verificación gratis de tu equipo A/A en instalaciones. WhatsApp (809) 742-6135.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <link rel="icon" type="image/jpeg" href="logo.jpeg">
-<meta name="google-site-verification" content="3vfjLg4PEOxuEzGMWu59IUWqbl7JLVgYklwRZ2GvBmE" />
 </head>
 <body>
 
@@ -88,6 +87,30 @@
       <path d="M43 34v10M38 44h10" />
     </g>
   </symbol>
+  <!-- filtro / limpieza -->
+  <symbol id="i-filter" viewBox="0 0 64 64">
+    <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="9" y="9" width="34" height="34" rx="4"/>
+      <path d="M9 18h34M9 26h34M9 34h34"/>
+      <path d="M18 9v34M26 9v34M34 9v34"/>
+      <path d="M49 40q6 4 3 11M55 36q9 6 4 17" opacity=".55"/>
+    </g>
+  </symbol>
+  <!-- medición de presión / temperatura -->
+  <symbol id="i-gauge" viewBox="0 0 64 64">
+    <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10 42a22 22 0 0 1 44 0"/>
+      <path d="M6 42h6M52 42h6M32 12v6"/>
+      <path d="M17 21l4.2 4.2M47 21l-4.2 4.2" opacity=".6"/>
+      <path d="M32 42 44 26"/>
+      <circle cx="32" cy="42" r="3.4" fill="currentColor" stroke="none"/>
+    </g>
+  </symbol>
+  <!-- diagnóstico / corrección + garantía -->
+  <symbol id="i-wrench-shield" viewBox="0 0 64 64">
+    <path d="M32 6 12 13v14c0 13.5 8.4 22 20 29 11.6-7 20-15.5 20-29V13z" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M45 26.6a6.6 6.6 0 0 1-8.7 8.2L24.4 42a3 3 0 0 1-4.3-4.3l9.2-9.1a6.6 6.6 0 0 1 8.2-8.7l-4.3 4.3 1.4 4.3 4.3 1.4z" fill="currentColor" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+  </symbol>
   <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13.4 2 4 14h6.2l-.6 8L20 10h-6.4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
   <symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 6.8V12l3.6 2.4"/></g></symbol>
   <symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.6" cy="10.6" r="6.8"/><path d="m15.6 15.6 4.7 4.7"/></g></symbol>
@@ -106,9 +129,7 @@
 
   <div class="wrap">
     <div class="brandbar">
-      <span class="mark">
-        <img src="logo.jpeg" alt="Logo de The Compas Refrigeración ">
-      </span>
+      <span class="mark"><img src="logo.jpeg" alt="Logo The Compas Refrigeracion" class="logo-header"></span>
       <span class="brandtext">
         <strong>THE COMPAS <span>REFRIGERACIÓN</span></strong>
         <em>Tu confort en buenas manos</em>
@@ -170,7 +191,7 @@
         <p class="gift"><svg aria-hidden="true"><use href="#i-gift"/></svg> Verificación de tu equipo A/A GRATIS</p>
         <p class="excl">No incluye el punto de electricidad.</p>
         <p class="price"><span class="cur">RD$</span><span class="num">2,000</span><span class="per">precio<br>de instalación</span></p>
-        <a class="btn btn-tier" data-wa="tier" data-tier="Instalación básica (callejón o techo)" data-precio="2000" href="#cotizador">Cotizar esta instalación</a>
+        <a class="btn btn-tier" data-wa="tier" data-modo="instalacion" data-target="tipo-inst-basica" href="#cotizador">Cotizar esta instalación</a>
       </article>
 
       <!-- 2 -->
@@ -187,7 +208,7 @@
         <p class="gift"><svg aria-hidden="true"><use href="#i-gift"/></svg> Verificación de tu equipo A/A GRATIS</p>
         <p class="excl">No incluye el punto de electricidad.</p>
         <p class="price"><span class="cur">RD$</span><span class="num">2,500</span><span class="per">precio<br>de instalación</span></p>
-        <a class="btn btn-tier" data-wa="tier" data-tier="Instalación en palometas (soportes de pared)" data-precio="2500" href="#cotizador">Cotizar esta instalación</a>
+        <a class="btn btn-tier" data-wa="tier" data-modo="instalacion" data-target="tipo-inst-palometas" href="#cotizador">Cotizar esta instalación</a>
       </article>
 
       <!-- 3 -->
@@ -204,7 +225,7 @@
         <p class="gift"><svg aria-hidden="true"><use href="#i-gift"/></svg> Verificación de tu equipo A/A GRATIS</p>
         <p class="excl">No incluye el punto de electricidad.</p>
         <p class="price"><span class="cur">RD$</span><span class="num">3,000</span><span class="per">precio<br>de instalación</span></p>
-        <a class="btn btn-tier" data-wa="tier" data-tier="Instalación en vuelo (fachada o difícil acceso)" data-precio="3000" href="#cotizador">Cotizar esta instalación</a>
+        <a class="btn btn-tier" data-wa="tier" data-modo="instalacion" data-target="tipo-inst-vuelo" href="#cotizador">Cotizar esta instalación</a>
       </article>
     </div>
 
@@ -212,37 +233,123 @@
   </div>
 </section>
 
+<!-- ===================== MANTENIMIENTO ===================== -->
+<section id="mantenimiento" aria-labelledby="h-mantenimiento">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="h-mantenimiento">Mantenimiento de tu aire acondicionado</h2>
+      <p>Un equipo revisado a tiempo enfría mejor, gasta menos luz y dura más años. Elige el plan según lo que necesite tu unidad.</p>
+    </div>
+
+    <div class="tiers">
+      <!-- 1 -->
+      <article class="tier t-basica">
+        <div class="tier-art"><svg aria-hidden="true"><use href="#i-filter"/></svg></div>
+        <h3>Mantenimiento sencillo</h3>
+        <p class="sub">Preventivo</p>
+        <ul class="feats">
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg> Limpieza de filtros</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg> Limpieza de la unidad interior</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg> Revisión de drenaje</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg> Verificación de funcionamiento general</li>
+        </ul>
+        <p class="price"><span class="cur">RD$</span><span class="num">1,500</span><span class="per">precio<br>del servicio</span></p>
+        <a class="btn btn-tier" data-wa="tier" data-modo="mantenimiento" data-target="tipo-mant-sencillo" href="#cotizador">Cotizar este mantenimiento</a>
+      </article>
+
+      <!-- 2 -->
+      <article class="tier t-palo">
+        <div class="tier-art"><svg aria-hidden="true"><use href="#i-gauge"/></svg></div>
+        <h3>Mantenimiento completo</h3>
+        <p class="sub">Predictivo</p>
+        <ul class="feats">
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg> Todo lo del mantenimiento sencillo</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg> Limpieza profunda de serpentines</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg> Revisión de componentes eléctricos y mecánicos</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg> Medición de presiones y temperaturas</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg> Detección de posibles fallas</li>
+        </ul>
+        <p class="price"><span class="cur">RD$</span><span class="num">2,000</span><span class="per">precio<br>del servicio</span></p>
+        <a class="btn btn-tier" data-wa="tier" data-modo="mantenimiento" data-target="tipo-mant-completo" href="#cotizador">Cotizar este mantenimiento</a>
+      </article>
+
+      <!-- 3 -->
+      <article class="tier t-vuelo">
+        <div class="tier-art"><svg aria-hidden="true"><use href="#i-wrench-shield"/></svg></div>
+        <h3>Mantenimiento con diagnóstico</h3>
+        <p class="sub">Correctivo</p>
+        <ul class="feats">
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg> Todo lo del mantenimiento sencillo</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg> Diagnóstico y corrección de fallas</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg> Reemplazo de piezas defectuosas (según necesidad)</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg> Pruebas de rendimiento</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg> Garantía en el servicio</li>
+        </ul>
+        <p class="price"><span class="cur">RD$</span><span class="num">2,500</span><span class="per">precio<br>del servicio</span></p>
+        <a class="btn btn-tier" data-wa="tier" data-modo="mantenimiento" data-target="tipo-mant-diagnostico" href="#cotizador">Cotizar este mantenimiento</a>
+      </article>
+    </div>
+
+    <p class="fineprint">El reemplazo de piezas se cotiza aparte según la pieza y el modelo del equipo; te lo confirmamos antes de hacer cualquier cambio.</p>
+  </div>
+</section>
+
 <!-- ===================== COTIZADOR ===================== -->
 <section id="cotizador" aria-labelledby="h-cotiza">
   <div class="wrap">
     <div class="section-head">
-      <h2 id="h-cotiza">Calcula el precio de tu instalación</h2>
-      <p>Responde tres cosas y verás el total al momento. Después envías el desglose por WhatsApp y coordinamos la visita.</p>
+      <h2 id="h-cotiza">Calcula el precio de tu servicio</h2>
+      <p>Elige si es instalación o mantenimiento, responde unas preguntas y verás el total al momento. Después envías el desglose por WhatsApp y coordinamos la visita.</p>
+    </div>
+
+    <div class="modeSwitch" role="group" aria-label="Tipo de servicio a cotizar">
+      <button type="button" class="modeBtn is-active" data-modo="instalacion" aria-pressed="true">
+        <svg aria-hidden="true"><use href="#i-snow"/></svg> Instalación
+      </button>
+      <button type="button" class="modeBtn" data-modo="mantenimiento" aria-pressed="false">
+        <svg aria-hidden="true"><use href="#i-wrench-shield"/></svg> Mantenimiento
+      </button>
     </div>
 
     <form class="quote" id="cotizador-form" autocomplete="off">
       <div class="steps">
 
-        <fieldset class="step">
-          <legend><span class="n">1</span> ¿Qué tipo de instalación necesitas?</legend>
-          <div class="opts">
+        <fieldset class="step" id="stepTipo">
+          <legend><span class="n">1</span> <span id="tipoLegend">¿Qué tipo de instalación necesitas?</span></legend>
+
+          <div class="opts" id="opts-instalacion">
             <label class="opt">
-              <input type="radio" name="tipo" value="2000" data-nombre="Instalación básica (callejón o techo)" checked>
+              <input type="radio" name="tipo-instalacion" id="tipo-inst-basica" value="2000" data-nombre="Instalación básica (callejón o techo)" checked>
               <span><b>Básica</b><small>Callejón o techo</small><i>RD$ 2,000</i></span>
             </label>
             <label class="opt">
-              <input type="radio" name="tipo" value="2500" data-nombre="Instalación en palometas (soportes de pared)">
+              <input type="radio" name="tipo-instalacion" id="tipo-inst-palometas" value="2500" data-nombre="Instalación en palometas (soportes de pared)">
               <span><b>Palometas</b><small>Soportes de pared</small><i>RD$ 2,500</i></span>
             </label>
             <label class="opt">
-              <input type="radio" name="tipo" value="3000" data-nombre="Instalación en vuelo (fachada o difícil acceso)">
+              <input type="radio" name="tipo-instalacion" id="tipo-inst-vuelo" value="3000" data-nombre="Instalación en vuelo (fachada o difícil acceso)">
               <span><b>En vuelo</b><small>Fachada o altura</small><i>RD$ 3,000</i></span>
+            </label>
+          </div>
+
+          <div class="opts" id="opts-mantenimiento" hidden>
+            <label class="opt">
+              <input type="radio" name="tipo-mantenimiento" id="tipo-mant-sencillo" value="1500" data-nombre="Mantenimiento sencillo (preventivo)" checked>
+              <span><b>Sencillo</b><small>Preventivo</small><i>RD$ 1,500</i></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="tipo-mantenimiento" id="tipo-mant-completo" value="2000" data-nombre="Mantenimiento completo (predictivo)">
+              <span><b>Completo</b><small>Predictivo</small><i>RD$ 2,000</i></span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="tipo-mantenimiento" id="tipo-mant-diagnostico" value="2500" data-nombre="Mantenimiento con diagnóstico (correctivo)">
+              <span><b>Diagnóstico</b><small>Correctivo</small><i>RD$ 2,500</i></span>
             </label>
           </div>
         </fieldset>
 
         <fieldset class="step">
-          <legend><span class="n">2</span> ¿En qué piso vas a instalar?</legend>
+          <legend><span class="n">2</span> <span id="pisoLegend">¿En qué piso vas a instalar?</span></legend>
           <div class="floor">
             <div class="stepper">
               <button type="button" id="pisoMenos" aria-label="Bajar un piso">−</button>
@@ -253,7 +360,7 @@
           </div>
         </fieldset>
 
-        <fieldset class="step">
+        <fieldset class="step" id="stepElec">
           <legend><span class="n">3</span> ¿Necesitas el punto de electricidad?</legend>
           <label class="switch">
             <input type="checkbox" id="elec">
@@ -276,7 +383,7 @@
           <span class="big"><span class="cur">RD$</span><output id="total">2,000</output></span>
         </div>
 
-        <p class="giftline"><svg aria-hidden="true"><use href="#i-gift"/></svg> 🎁 ¡Incluye Verificación de tu equipo A/A GRATIS!</p>
+        <p class="giftline" id="giftline"><svg aria-hidden="true"><use href="#i-gift"/></svg> 🎁 ¡Incluye Verificación de tu equipo A/A GRATIS!</p>
 
         <a class="btn btn-wa" id="waCotiza" href="#" target="_blank" rel="noopener">
           <svg aria-hidden="true"><use href="#i-wa"/></svg> Solicitar por WhatsApp
