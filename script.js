@@ -42,17 +42,29 @@
   $$('[data-wa="secundario"]').forEach(function(el){ el.href = waLink(CONFIG.waSecundario, SALUDO); abrirFuera(el); });
   $$('[data-ig]').forEach(function(el){ el.href = CONFIG.instagram; abrirFuera(el); });
 
-  /* ===== Botones de cada tarjeta: precargan el cotizador ===== */
-  $$('[data-wa="tier"]').forEach(function(el){
-    el.addEventListener("click", function(){
-      var radio = $('input[name="tipo"][value="'+ el.dataset.precio +'"]');
-      if(radio){ radio.checked = true; calcular(); }
-    });
-  });
-
   /* =========================================================
      COTIZADOR
      ========================================================= */
+  var MODOS = {
+    instalacion: {
+      grupo: "tipo-instalacion",
+      legendTipo: "¿Qué tipo de instalación necesitas?",
+      legendPiso: "¿En qué piso vas a instalar?",
+      electricidad: true,
+      accion: "una instalación",
+      regalo: true
+    },
+    mantenimiento: {
+      grupo: "tipo-mantenimiento",
+      legendTipo: "¿Qué plan de mantenimiento necesitas?",
+      legendPiso: "¿En qué piso está tu equipo?",
+      electricidad: false,
+      accion: "un mantenimiento",
+      regalo: false
+    }
+  };
+  var modoActual = "instalacion";
+
   var piso = 1;
   var elOut    = $("#pisoOut");
   var btnMenos = $("#pisoMenos");
@@ -61,11 +73,40 @@
   var outTotal = $("#total");
   var lineas   = $("#lineas");
   var btnWa    = $("#waCotiza");
+  var stepElec = $("#stepElec");
+  var tipoLegend = $("#tipoLegend");
+  var pisoLegend = $("#pisoLegend");
+  var giftline   = $("#giftline");
+  var optsInstalacion   = $("#opts-instalacion");
+  var optsMantenimiento = $("#opts-mantenimiento");
   var totalAnterior = 0;
 
   function tipoSeleccionado(){
-    var r = $('input[name="tipo"]:checked');
+    var r = $('input[name="' + MODOS[modoActual].grupo + '"]:checked');
     return { precio: parseInt(r.value,10), nombre: r.dataset.nombre };
+  }
+
+  function aplicarModo(modo){
+    if(!MODOS[modo]) return;
+    modoActual = modo;
+    var m = MODOS[modo];
+
+    $$(".modeBtn").forEach(function(b){
+      var activo = b.dataset.modo === modo;
+      b.classList.toggle("is-active", activo);
+      b.setAttribute("aria-pressed", activo ? "true" : "false");
+    });
+
+    optsInstalacion.hidden   = modo !== "instalacion";
+    optsMantenimiento.hidden = modo !== "mantenimiento";
+
+    tipoLegend.textContent = m.legendTipo;
+    pisoLegend.textContent = m.legendPiso;
+
+    stepElec.hidden = !m.electricidad;
+    if(!m.electricidad){ chkElec.checked = false; }
+
+    calcular();
   }
 
   function renderPiso(){
@@ -97,10 +138,11 @@
   }
 
   function calcular(){
+    var m       = MODOS[modoActual];
     var tipo    = tipoSeleccionado();
     var niveles = piso - 1;
     var extraPiso = niveles * CONFIG.precioPiso;
-    var extraElec = chkElec.checked ? CONFIG.precioElectricidad : 0;
+    var extraElec = (m.electricidad && chkElec.checked) ? CONFIG.precioElectricidad : 0;
     var total = tipo.precio + extraPiso + extraElec;
 
     /* Desglose visible */
@@ -111,10 +153,13 @@
     }else{
       lineas.appendChild(fila("Piso 1 (sin recargo)", "RD$ 0"));
     }
-    if(extraElec > 0){
+    if(m.electricidad && extraElec > 0){
       lineas.appendChild(fila("Punto de electricidad", "RD$ " + fmt.format(extraElec)));
     }
-    lineas.appendChild(fila("Verificación de tu equipo A/A", "Gratis", true));
+    if(m.regalo){
+      lineas.appendChild(fila("Verificación de tu equipo A/A", "Gratis", true));
+    }
+    giftline.hidden = !m.regalo;
 
     animarTotal(totalAnterior, total);
     totalAnterior = total;
@@ -122,24 +167,55 @@
     /* Mensaje de WhatsApp con el desglose */
     var msg = [
       "Hola The Compas Refrigeración 👋",
-      "Quiero agendar una instalación con esta cotización:",
+      "Quiero agendar " + m.accion + " con esta cotización:",
       "",
       "• Tipo: " + tipo.nombre + " — RD$ " + fmt.format(tipo.precio),
-      "• Piso: " + piso + (niveles > 0 ? " (+RD$ " + fmt.format(extraPiso) + " por " + niveles + " nivel" + (niveles>1?"es":"") + ")" : " (sin recargo)"),
-      "• Punto de electricidad: " + (extraElec ? "Sí (+RD$ " + fmt.format(extraElec) + ")" : "No"),
-      "",
-      "TOTAL ESTIMADO: RD$ " + fmt.format(total),
-      "🎁 Incluye la verificación gratis de mi equipo A/A.",
-      "",
-      "¿Cuándo tienen disponibilidad?"
-    ].join("\n");
-    btnWa.href = waLink(CONFIG.waPrincipal, msg);
+      "• Piso: " + piso + (niveles > 0 ? " (+RD$ " + fmt.format(extraPiso) + " por " + niveles + " nivel" + (niveles>1?"es":"") + ")" : " (sin recargo)")
+    ];
+    if(m.electricidad){
+      msg.push("• Punto de electricidad: " + (extraElec ? "Sí (+RD$ " + fmt.format(extraElec) + ")" : "No"));
+    }
+    msg.push("");
+    msg.push("TOTAL ESTIMADO: RD$ " + fmt.format(total));
+    if(m.regalo){
+      msg.push("🎁 Incluye la verificación gratis de mi equipo A/A.");
+    }
+    msg.push("");
+    msg.push("¿Cuándo tienen disponibilidad?");
+
+    btnWa.href = waLink(CONFIG.waPrincipal, msg.join("\n"));
   }
+
+  /* Scroll manual al cotizador (no se deja el salto de ancla nativo del
+     navegador porque en algunos entornos móviles — sobre todo el navegador
+     interno de Instagram/WhatsApp — ese salto puede ganarle la carrera al
+     cambio de estado en JS) */
+  function irACotizador(){
+    var destino = document.getElementById("cotizador");
+    if(destino){ destino.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }); }
+  }
+
+  /* ===== Botones de cada tarjeta: fijan modo + plan exacto en el cotizador ===== */
+  $$('[data-wa="tier"]').forEach(function(el){
+    el.addEventListener("click", function(e){
+      e.preventDefault();                 // nunca dejar que el <a href="#cotizador"> navegue por su cuenta
+      var radio = document.getElementById(el.dataset.target);
+      if(radio){ radio.checked = true; }   // 1. marcar el plan exacto
+      if(el.dataset.modo){ aplicarModo(el.dataset.modo); } else { calcular(); } // 2. activar el modo (esto ya recalcula el total)
+      irACotizador();                      // 3. bajar hasta el cotizador, ya con el estado final aplicado
+    });
+  });
+
+  /* ===== Selector Instalación / Mantenimiento ===== */
+  $$(".modeBtn").forEach(function(b){
+    b.addEventListener("click", function(){ aplicarModo(b.dataset.modo); });
+  });
 
   /* ===== Eventos ===== */
   btnMenos.addEventListener("click", function(){ if(piso > 1){ piso--; renderPiso(); calcular(); } });
   btnMas.addEventListener("click",   function(){ if(piso < CONFIG.pisoMax){ piso++; renderPiso(); calcular(); } });
-  $$('input[name="tipo"]').forEach(function(r){ r.addEventListener("change", calcular); });
+  $$('input[name="tipo-instalacion"]').forEach(function(r){ r.addEventListener("change", calcular); });
+  $$('input[name="tipo-mantenimiento"]').forEach(function(r){ r.addEventListener("change", calcular); });
   chkElec.addEventListener("change", calcular);
   $("#cotizador-form").addEventListener("submit", function(e){ e.preventDefault(); });
 
