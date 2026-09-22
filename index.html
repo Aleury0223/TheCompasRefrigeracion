@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/jpeg" href="logo.jpeg">
 <meta name="google-site-verification" content="3vfjLg4PEOxuEzGMWu59IUWqbl7JLVgYklwRZ2GvBmE" />
 </head>
 <body>
@@ -22,7 +23,6 @@
       <g transform="rotate(120 24 24)"><path d="M24 4v40"/><path d="M24 11l-5.5-5.5M24 11l5.5-5.5M24 37l-5.5 5.5M24 37l5.5 5.5"/></g>
     </g>
   </symbol>
-  <!-- Isotipo: unidad split emitiendo frío + copo de nieve, con ondas en las esquinas -->
   <symbol id="i-isotipo" viewBox="0 0 80 64">
     <g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" opacity=".4">
       <path d="M1 5.5q4-5 8 0t8 0"/><path d="M1 12q4-5 8 0t8 0"/>
@@ -56,7 +56,6 @@
       <path d="M12 9.5S10.4 3 7.6 3a2.6 2.6 0 0 0 0 6.5zM12 9.5S13.6 3 16.4 3a2.6 2.6 0 0 1 0 6.5z"/>
     </g>
   </symbol>
-  <!-- unidad split sobre pared simple -->
   <symbol id="i-split" viewBox="0 0 64 64">
     <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
       <rect x="10" y="12" width="44" height="17" rx="5"/>
@@ -65,7 +64,6 @@
       <path d="M6 12v40" stroke-dasharray="4 5" opacity=".55"/>
     </g>
   </symbol>
-  <!-- palometas / soportes -->
   <symbol id="i-bracket" viewBox="0 0 64 64">
     <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
       <rect x="18" y="10" width="38" height="16" rx="4"/>
@@ -76,7 +74,6 @@
       <circle cx="46" cy="32" r="2.4" fill="currentColor" stroke="none"/>
     </g>
   </symbol>
-  <!-- en vuelo / fachada -->
   <symbol id="i-facade" viewBox="0 0 64 64">
     <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
       <path d="M8 4v56"/>
@@ -87,7 +84,6 @@
       <path d="M43 34v10M38 44h10" />
     </g>
   </symbol>
-  <!-- filtro / limpieza -->
   <symbol id="i-filter" viewBox="0 0 64 64">
     <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
       <rect x="9" y="9" width="34" height="34" rx="4"/>
@@ -96,7 +92,6 @@
       <path d="M49 40q6 4 3 11M55 36q9 6 4 17" opacity=".55"/>
     </g>
   </symbol>
-  <!-- medición de presión / temperatura -->
   <symbol id="i-gauge" viewBox="0 0 64 64">
     <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
       <path d="M10 42a22 22 0 0 1 44 0"/>
@@ -106,7 +101,6 @@
       <circle cx="32" cy="42" r="3.4" fill="currentColor" stroke="none"/>
     </g>
   </symbol>
-  <!-- diagnóstico / corrección + garantía -->
   <symbol id="i-wrench-shield" viewBox="0 0 64 64">
     <path d="M32 6 12 13v14c0 13.5 8.4 22 20 29 11.6-7 20-15.5 20-29V13z" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M45 26.6a6.6 6.6 0 0 1-8.7 8.2L24.4 42a3 3 0 0 1-4.3-4.3l9.2-9.1a6.6 6.6 0 0 1 8.2-8.7l-4.3 4.3 1.4 4.3 4.3 1.4z" fill="currentColor" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
@@ -129,7 +123,7 @@
 
   <div class="wrap">
     <div class="brandbar">
-      <span class="mark"><svg aria-hidden="true"><use href="#i-isotipo"/></svg></span>
+      <span class="mark"><img src="logo.jpeg" alt="Logo The Compas Refrigeración" class="logo-header"></span>
       <span class="brandtext">
         <strong>THE COMPAS <span>REFRIGERACIÓN</span></strong>
         <em>Tu confort en buenas manos</em>
@@ -228,8 +222,6 @@
         <a class="btn btn-tier" data-wa="tier" data-modo="instalacion" data-target="tipo-inst-vuelo" href="#cotizador">Cotizar esta instalación</a>
       </article>
     </div>
-
-    <p class="fineprint">Ojo con los adicionales: cada piso por encima del primero suma RD$500 y el punto de electricidad suma RD$500. Calcula tu caso exacto abajo antes de escribirnos.</p>
   </div>
 </section>
 
@@ -348,20 +340,8 @@
           </div>
         </fieldset>
 
-        <fieldset class="step">
-          <legend><span class="n">2</span> <span id="pisoLegend">¿En qué piso vas a instalar?</span></legend>
-          <div class="floor">
-            <div class="stepper">
-              <button type="button" id="pisoMenos" aria-label="Bajar un piso">−</button>
-              <output id="pisoOut" for="pisoMenos pisoMas" aria-live="polite">Piso 1</output>
-              <button type="button" id="pisoMas" aria-label="Subir un piso">+</button>
-            </div>
-            <p class="hint">El primer piso no tiene recargo. A partir del segundo se suman RD$500 por cada nivel.</p>
-          </div>
-        </fieldset>
-
         <fieldset class="step" id="stepElec">
-          <legend><span class="n">3</span> ¿Necesitas el punto de electricidad?</legend>
+          <legend><span class="n">2</span> ¿Necesitas el punto de electricidad?</legend>
           <label class="switch">
             <input type="checkbox" id="elec">
             <span class="track" aria-hidden="true"></span>

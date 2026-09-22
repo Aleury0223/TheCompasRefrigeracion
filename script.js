@@ -15,9 +15,7 @@
     instagram: "https://www.instagram.com/d.los.compas.refrigeracion?stkn=MXpjcXFjM3dxeGZx",
 
     // Recargos del cotizador
-    precioPiso: 500,                  // por cada piso adicional
-    precioElectricidad: 500,          // punto de electricidad
-    pisoMax: 15
+    precioElectricidad: 500          // punto de electricidad
   };
 
   var SALUDO = "Hola The Compas Refrigeración 👋 Quiero pedir una cita para mi aire acondicionado. ¿Cuándo tienen disponibilidad?";
@@ -49,7 +47,6 @@
     instalacion: {
       grupo: "tipo-instalacion",
       legendTipo: "¿Qué tipo de instalación necesitas?",
-      legendPiso: "¿En qué piso vas a instalar?",
       electricidad: true,
       accion: "una instalación",
       regalo: true
@@ -57,7 +54,6 @@
     mantenimiento: {
       grupo: "tipo-mantenimiento",
       legendTipo: "¿Qué plan de mantenimiento necesitas?",
-      legendPiso: "¿En qué piso está tu equipo?",
       electricidad: false,
       accion: "un mantenimiento",
       regalo: false
@@ -65,17 +61,12 @@
   };
   var modoActual = "instalacion";
 
-  var piso = 1;
-  var elOut    = $("#pisoOut");
-  var btnMenos = $("#pisoMenos");
-  var btnMas   = $("#pisoMas");
   var chkElec  = $("#elec");
   var outTotal = $("#total");
   var lineas   = $("#lineas");
   var btnWa    = $("#waCotiza");
   var stepElec = $("#stepElec");
   var tipoLegend = $("#tipoLegend");
-  var pisoLegend = $("#pisoLegend");
   var giftline   = $("#giftline");
   var optsInstalacion   = $("#opts-instalacion");
   var optsMantenimiento = $("#opts-mantenimiento");
@@ -101,18 +92,11 @@
     optsMantenimiento.hidden = modo !== "mantenimiento";
 
     tipoLegend.textContent = m.legendTipo;
-    pisoLegend.textContent = m.legendPiso;
 
     stepElec.hidden = !m.electricidad;
     if(!m.electricidad){ chkElec.checked = false; }
 
     calcular();
-  }
-
-  function renderPiso(){
-    elOut.textContent = "Piso " + piso;
-    btnMenos.disabled = piso <= 1;
-    btnMas.disabled   = piso >= CONFIG.pisoMax;
   }
 
   function fila(texto, valor, gratis){
@@ -140,19 +124,13 @@
   function calcular(){
     var m       = MODOS[modoActual];
     var tipo    = tipoSeleccionado();
-    var niveles = piso - 1;
-    var extraPiso = niveles * CONFIG.precioPiso;
     var extraElec = (m.electricidad && chkElec.checked) ? CONFIG.precioElectricidad : 0;
-    var total = tipo.precio + extraPiso + extraElec;
+    var total = tipo.precio + extraElec;
 
     /* Desglose visible */
     lineas.textContent = "";
     lineas.appendChild(fila(tipo.nombre, "RD$ " + fmt.format(tipo.precio)));
-    if(niveles > 0){
-      lineas.appendChild(fila("Piso " + piso + " (" + niveles + " nivel" + (niveles>1?"es":"") + " adicional" + (niveles>1?"es":"") + ")", "RD$ " + fmt.format(extraPiso)));
-    }else{
-      lineas.appendChild(fila("Piso 1 (sin recargo)", "RD$ 0"));
-    }
+
     if(m.electricidad && extraElec > 0){
       lineas.appendChild(fila("Punto de electricidad", "RD$ " + fmt.format(extraElec)));
     }
@@ -169,8 +147,7 @@
       "Hola The Compas Refrigeración 👋",
       "Quiero agendar " + m.accion + " con esta cotización:",
       "",
-      "• Tipo: " + tipo.nombre + " — RD$ " + fmt.format(tipo.precio),
-      "• Piso: " + piso + (niveles > 0 ? " (+RD$ " + fmt.format(extraPiso) + " por " + niveles + " nivel" + (niveles>1?"es":"") + ")" : " (sin recargo)")
+      "• Tipo: " + tipo.nombre + " — RD$ " + fmt.format(tipo.precio)
     ];
     if(m.electricidad){
       msg.push("• Punto de electricidad: " + (extraElec ? "Sí (+RD$ " + fmt.format(extraElec) + ")" : "No"));
@@ -186,23 +163,28 @@
     btnWa.href = waLink(CONFIG.waPrincipal, msg.join("\n"));
   }
 
-  /* Scroll manual al cotizador (no se deja el salto de ancla nativo del
-     navegador porque en algunos entornos móviles — sobre todo el navegador
-     interno de Instagram/WhatsApp — ese salto puede ganarle la carrera al
-     cambio de estado en JS) */
-  function irACotizador(){
-    var destino = document.getElementById("cotizador");
-    if(destino){ destino.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }); }
-  }
-
   /* ===== Botones de cada tarjeta: fijan modo + plan exacto en el cotizador ===== */
   $$('[data-wa="tier"]').forEach(function(el){
     el.addEventListener("click", function(e){
-      e.preventDefault();                 // nunca dejar que el <a href="#cotizador"> navegue por su cuenta
-      var radio = document.getElementById(el.dataset.target);
-      if(radio){ radio.checked = true; }   // 1. marcar el plan exacto
-      if(el.dataset.modo){ aplicarModo(el.dataset.modo); } else { calcular(); } // 2. activar el modo (esto ya recalcula el total)
-      irACotizador();                      // 3. bajar hasta el cotizador, ya con el estado final aplicado
+      e.preventDefault();
+      var targetId = el.dataset.target;
+      var modoTarget = el.dataset.modo;
+
+      if(modoTarget){
+        aplicarModo(modoTarget);
+      }
+
+      var radio = document.getElementById(targetId);
+      if(radio){
+        radio.checked = true;
+      }
+
+      calcular();
+
+      var cotizadorSection = $("#cotizador");
+      if(cotizadorSection){
+        cotizadorSection.scrollIntoView({ behavior: "smooth" });
+      }
     });
   });
 
@@ -212,13 +194,10 @@
   });
 
   /* ===== Eventos ===== */
-  btnMenos.addEventListener("click", function(){ if(piso > 1){ piso--; renderPiso(); calcular(); } });
-  btnMas.addEventListener("click",   function(){ if(piso < CONFIG.pisoMax){ piso++; renderPiso(); calcular(); } });
   $$('input[name="tipo-instalacion"]').forEach(function(r){ r.addEventListener("change", calcular); });
   $$('input[name="tipo-mantenimiento"]').forEach(function(r){ r.addEventListener("change", calcular); });
   chkElec.addEventListener("change", calcular);
   $("#cotizador-form").addEventListener("submit", function(e){ e.preventDefault(); });
 
-  renderPiso();
   calcular();
 })();
