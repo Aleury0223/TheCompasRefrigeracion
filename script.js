@@ -15,7 +15,8 @@
     instagram: "https://www.instagram.com/d.los.compas.refrigeracion?stkn=MXpjcXFjM3dxeGZx",
 
     // Recargos del cotizador
-    precioElectricidad: 500          // punto de electricidad
+    precioPisoExtra: 500,          // por cada piso por encima del 1ro (solo instalación)
+    precioElectricidad: 500        // punto de electricidad
   };
 
   var SALUDO = "Hola The Compas Refrigeración 👋 Quiero pedir una cita para mi aire acondicionado. ¿Cuándo tienen disponibilidad?";
@@ -47,6 +48,7 @@
     instalacion: {
       grupo: "tipo-instalacion",
       legendTipo: "¿Qué tipo de instalación necesitas?",
+      piso: true,
       electricidad: true,
       accion: "una instalación",
       regalo: true
@@ -54,18 +56,22 @@
     mantenimiento: {
       grupo: "tipo-mantenimiento",
       legendTipo: "¿Qué plan de mantenimiento necesitas?",
+      piso: false,
       electricidad: false,
       accion: "un mantenimiento",
       regalo: false
     }
   };
   var modoActual = "instalacion";
+  var pisoActual = 1;
 
   var chkElec  = $("#elec");
   var outTotal = $("#total");
   var lineas   = $("#lineas");
   var btnWa    = $("#waCotiza");
+  var stepPiso = $("#stepPiso");
   var stepElec = $("#stepElec");
+  var numElec  = $("#numElec");
   var tipoLegend = $("#tipoLegend");
   var giftline   = $("#giftline");
   var optsInstalacion   = $("#opts-instalacion");
@@ -75,6 +81,12 @@
   function tipoSeleccionado(){
     var r = $('input[name="' + MODOS[modoActual].grupo + '"]:checked');
     return { precio: parseInt(r.value,10), nombre: r.dataset.nombre };
+  }
+
+  function renderPiso(){
+    $("#pisoVal").textContent = "Piso " + pisoActual;
+    $("#pisoMenos").disabled = (pisoActual <= 1);
+    $("#pisoMas").disabled   = (pisoActual >= 10);
   }
 
   function aplicarModo(modo){
@@ -93,7 +105,13 @@
 
     tipoLegend.textContent = m.legendTipo;
 
+    stepPiso.hidden = !m.piso;
     stepElec.hidden = !m.electricidad;
+
+    if(numElec){
+      numElec.textContent = m.piso ? "3" : "2";
+    }
+
     if(!m.electricidad){ chkElec.checked = false; }
 
     calcular();
@@ -122,14 +140,23 @@
   }
 
   function calcular(){
-    var m       = MODOS[modoActual];
-    var tipo    = tipoSeleccionado();
-    var extraElec = (m.electricidad && chkElec.checked) ? CONFIG.precioElectricidad : 0;
-    var total = tipo.precio + extraElec;
+    var m          = MODOS[modoActual];
+    var tipo       = tipoSeleccionado();
+    var extraPiso  = (m.piso && pisoActual > 1) ? (pisoActual - 1) * CONFIG.precioPisoExtra : 0;
+    var extraElec  = (m.electricidad && chkElec.checked) ? CONFIG.precioElectricidad : 0;
+    var total = tipo.precio + extraPiso + extraElec;
 
     /* Desglose visible */
     lineas.textContent = "";
     lineas.appendChild(fila(tipo.nombre, "RD$ " + fmt.format(tipo.precio)));
+
+    if(m.piso){
+      if(extraPiso > 0){
+        lineas.appendChild(fila("Piso " + pisoActual + " (recargo altura)", "RD$ " + fmt.format(extraPiso)));
+      } else {
+        lineas.appendChild(fila("Piso 1 (sin recargo)", "RD$ 0"));
+      }
+    }
 
     if(m.electricidad && extraElec > 0){
       lineas.appendChild(fila("Punto de electricidad", "RD$ " + fmt.format(extraElec)));
@@ -149,6 +176,9 @@
       "",
       "• Tipo: " + tipo.nombre + " — RD$ " + fmt.format(tipo.precio)
     ];
+    if(m.piso){
+      msg.push("• Ubicación: Piso " + pisoActual + (extraPiso ? " (+RD$ " + fmt.format(extraPiso) + ")" : " (sin recargo)"));
+    }
     if(m.electricidad){
       msg.push("• Punto de electricidad: " + (extraElec ? "Sí (+RD$ " + fmt.format(extraElec) + ")" : "No"));
     }
@@ -162,6 +192,14 @@
 
     btnWa.href = waLink(CONFIG.waPrincipal, msg.join("\n"));
   }
+
+  /* ===== Stepper de pisos ===== */
+  $("#pisoMenos").addEventListener("click", function(){
+    if(pisoActual > 1){ pisoActual--; renderPiso(); calcular(); }
+  });
+  $("#pisoMas").addEventListener("click", function(){
+    if(pisoActual < 10){ pisoActual++; renderPiso(); calcular(); }
+  });
 
   /* ===== Botones de cada tarjeta: fijan modo + plan exacto en el cotizador ===== */
   $$('[data-wa="tier"]').forEach(function(el){
@@ -199,5 +237,6 @@
   chkElec.addEventListener("change", calcular);
   $("#cotizador-form").addEventListener("submit", function(e){ e.preventDefault(); });
 
+  renderPiso();
   calcular();
 })();

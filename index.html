@@ -222,6 +222,8 @@
         <a class="btn btn-tier" data-wa="tier" data-modo="instalacion" data-target="tipo-inst-vuelo" href="#cotizador">Cotizar esta instalación</a>
       </article>
     </div>
+
+    <p class="fineprint">Ojo con los adicionales: cada piso por encima del primero suma RD$500 a la instalación por manejo de equipos en altura.</p>
   </div>
 </section>
 
@@ -340,8 +342,18 @@
           </div>
         </fieldset>
 
+        <fieldset class="step" id="stepPiso">
+          <legend><span class="n" id="numPiso">2</span> ¿En qué piso está tu equipo?</legend>
+          <div class="stepper">
+            <button type="button" id="pisoMenos" aria-label="Un piso menos">−</button>
+            <span class="val" id="pisoVal">Piso 1</span>
+            <button type="button" id="pisoMas" aria-label="Un piso más">+</button>
+          </div>
+          <p class="hint">El primer piso no tiene recargo. A partir del segundo se suman RD$500 por cada nivel.</p>
+        </fieldset>
+
         <fieldset class="step" id="stepElec">
-          <legend><span class="n">2</span> ¿Necesitas el punto de electricidad?</legend>
+          <legend><span class="n" id="numElec">3</span> ¿Necesitas el punto de electricidad?</legend>
           <label class="switch">
             <input type="checkbox" id="elec">
             <span class="track" aria-hidden="true"></span>
